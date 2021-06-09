@@ -1,3 +1,9 @@
+// get data from fireStore
+db.collection('guides').get().then(snapshot =>{
+  setupGuides(snapshot.docs);
+
+})
+
 //listen for auth status changes. to know if user is login or out
 auth.onAuthStateChanged(user =>{
   console.log(user);
