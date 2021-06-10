@@ -1,16 +1,19 @@
-// get data from fireStore
-db.collection('guides').get().then(snapshot =>{
-  setupGuides(snapshot.docs);
 
-})
 
 //listen for auth status changes. to know if user is login or out
 auth.onAuthStateChanged(user =>{
   console.log(user);
   if(user){
-    console.log('user logged in:', user);
+    // console.log('user logged in:', user);
+
+    // get data from fireStore
+    db.collection('guides').get().then(snapshot =>{
+      setupGuides(snapshot.docs);
+});
   }else{
-    console.log('user logged out');
+    // console.log('user logged out');
+
+    setupGuides([]);
   }
 });
 
