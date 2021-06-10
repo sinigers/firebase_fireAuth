@@ -9,10 +9,12 @@ auth.onAuthStateChanged(user =>{
     // get data from fireStore
     db.collection('guides').get().then(snapshot =>{
       setupGuides(snapshot.docs);
+
+    setupUI(user); 
 });
   }else{
     // console.log('user logged out');
-
+    setupUI();
     setupGuides([]);
   }
 });
