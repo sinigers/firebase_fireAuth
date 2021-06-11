@@ -6,12 +6,11 @@ auth.onAuthStateChanged(user =>{
   if(user){
     // console.log('user logged in:', user);
 
-    // get data from fireStore
-    db.collection('guides').get().then(snapshot =>{
+    // get data from fireStore. get() takes info on log in; onSnapshot(..) takes info in realtime
+    db.collection('guides').onSnapshot(snapshot => {
       setupGuides(snapshot.docs);
-
-    setupUI(user); 
-});
+      setupUI(user); 
+    });
   }else{
     // console.log('user logged out');
     setupUI();
@@ -38,8 +37,6 @@ createForm.addEventListener('submit', (e) =>{
     console.log(err.message);
   })
 });
-
-
 
 
 // signup
