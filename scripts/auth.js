@@ -1,7 +1,7 @@
 
 
 //listen for auth status changes. to know if user is login or out
-auth.onAuthStateChanged(user =>{
+auth.onAuthStateChanged(user => {
   console.log(user);
   if(user){
     // console.log('user logged in:', user);
@@ -9,12 +9,9 @@ auth.onAuthStateChanged(user =>{
     // get data from fireStore. get() takes info on log in; onSnapshot(..) takes info in realtime
     db.collection('guides').onSnapshot(snapshot => {
       setupGuides(snapshot.docs);
-      setupUI(user); 
-    }).catch(err =>{
-    console.log(err.message);
-    });
-  }else{
-    // console.log('user logged out');
+      setupUI(user);
+    }, err => console.log(err.message));
+  } else {
     setupUI();
     setupGuides([]);
   }
@@ -55,10 +52,15 @@ signupForm.addEventListener('submit', (e) => {
   auth.createUserWithEmailAndPassword(email, password).then(cred => {
     // console.log(cred.user);
     
-    // close the signup modal & reset form
-    const modal = document.querySelector('#modal-signup');
-    M.Modal.getInstance(modal).close();
-    signupForm.reset();
+    //create: 'users' collection and document with same id as user Id from auth collection
+    return db.collection('users').doc(cred.user.uid).set({
+      bio: signupForm['signup-bio'].value
+    });
+  }).then(() => {
+  // close the signup modal & reset form
+  const modal = document.querySelector('#modal-signup');
+  M.Modal.getInstance(modal).close();
+  signupForm.reset();
   });
 });
 
