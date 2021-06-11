@@ -19,6 +19,28 @@ auth.onAuthStateChanged(user =>{
   }
 });
 
+//create new guide or post
+const createForm=document.querySelector('#create-form');
+createForm.addEventListener('submit', (e) =>{
+  e.preventDefault();
+
+  //get value from inputs and convert to firestore db document. async method
+   db.collection('guides').add({
+     title: createForm['title'].value,
+      content: createForm['content'].value
+
+   }).then(() =>{
+    // close the signup modal & reset form
+    const modal = document.querySelector('#modal-create');
+    M.Modal.getInstance(modal).close();
+    createForm.reset();
+  }).catch(err =>{
+    console.log(err.message);
+  })
+});
+
+
+
 
 // signup
 const signupForm = document.querySelector('#signup-form');
