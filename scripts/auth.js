@@ -13,10 +13,11 @@ adminForm.addEventListener('submit', (e) =>{
 
 //listen for auth status changes. to know if user is login or out
 auth.onAuthStateChanged(user => {
-  console.log(user);
-  if(user){
-    // console.log('user logged in:', user);
-
+  if (user) {
+    user.getIdTokenResult().then(idTokenResult => {
+      user.admin = idTokenResult.claims.admin;
+      setupUI(user);
+    });
     // get data from fireStore. get() takes info on log in; onSnapshot(..) takes info in realtime
     db.collection('guides').onSnapshot(snapshot => {
       setupGuides(snapshot.docs);
